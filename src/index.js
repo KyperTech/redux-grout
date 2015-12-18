@@ -17,9 +17,9 @@ export function createMiddleware(groutName, groutOptions) {
 let grout;
 //Export grout instance
 export function getGrout() {
-  if(!grout){
-    throw Error('You must call createMiddleware before using ');
-  }
+  // if(!grout){
+  //   throw Error('You must call createMiddleware before using ');
+  // }
   return grout;
 }
 //Create new grout instance

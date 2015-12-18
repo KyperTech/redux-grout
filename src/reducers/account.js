@@ -15,6 +15,7 @@ export function account(state = {
   case LOGIN_REQUEST:
     return merge({}, state, {isFetching: true});
   case LOGIN_SUCCESS:
+    console.log('successful login action recieved in reducer', action);
     return merge({}, state, {isFetching: false, id: action.response.result});
   case SIGNUP_REQUEST:
     return merge({}, state, {isFetching: true});

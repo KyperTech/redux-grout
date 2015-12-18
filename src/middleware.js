@@ -1,19 +1,34 @@
 
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
-import { getMatter } from './index';
+import { getGrout } from './index';
 
-let matter = getMatter();
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-function callMatter(method, schema, callData) {
-  return matter[method](callData).then((response) => {
-    const camelizedJson = camelizeKeys(response)
-    return Object.assign({},
-      normalize(camelizedJson, schema))
-  }, (err) => {
-    console.error('Error calling matter');
-  });
+function callGrout(method, schema, callData, model) {
+  let grout = getGrout();
+  if(model){
+    console.log('calling grout from middleware:')
+    return grout[model][method](callData).then((response) => {
+      console.log('grout responed:', response);
+      const camelizedJson = camelizeKeys(response)
+      return Object.assign({},
+        normalize(camelizedJson, schema))
+    }, (err) => {
+      console.error('Error calling grout');
+    });
+  } else {
+    console.log('calling grout from middleware:');
+    return grout[method](callData).then((response) => {
+      console.log('grout responed:', response);
+      const camelizedJson = camelizeKeys(response)
+      return Object.assign({},
+        normalize(camelizedJson, schema))
+    }, (err) => {
+      console.error('Error calling grout');
+    });
+  }
+
 }
 
 // We use this Normalizr schemas to transform API responses from a nested form
@@ -42,18 +57,22 @@ export const Schemas = {
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.
-export const CALL_MATTER = Symbol('Call Matter')
+export const CALL_GROUT = Symbol('Call Grout')
 
-// A Redux middleware that interprets actions with CALL_MATTER info specified.
+// A Redux middleware that interprets actions with CALL_GROUT info specified.
 // Performs the call and promises when such actions are dispatched.
 export default store => next => action => {
-  const callAPI = action[CALL_MATTER]
+  const callAPI = action[CALL_GROUT]
   if (typeof callAPI === 'undefined') {
     return next(action)
   }
 
-  let { method, callData } = callAPI
+  let { model, method, callData } = callAPI
   const { schema, types } = callAPI
+  if(model) {
+    console.warn('Model was provided');
+  }
+
   if (typeof method === 'function') {
     method = method(store.getState())
   }
@@ -73,14 +92,14 @@ export default store => next => action => {
 
   function actionWith(data) {
     const finalAction = Object.assign({}, action, data)
-    delete finalAction[CALL_MATTER]
+    delete finalAction[CALL_GROUT]
     return finalAction
   }
 
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
-
-  return callMatter(method, schema, callData).then(
+  console.log('calling grout', method, schema, callData);
+  return callGrout(method, schema, callData, model).then(
     response => next(actionWith({
       response,
       type: successType
