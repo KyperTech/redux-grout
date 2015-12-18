@@ -1,17 +1,29 @@
-/** Matter Singleton
+/** grout Singleton
  */
 
-import MatterInstance from 'kyper-matter';
+import Middleware from './middleware';
+import GroutInstance from './grout';
 
-//Create singleton instance of Matter using project name
-let matter;
-export default function(matterName, matterOptions) {
-  //TODO: Handle being passed a matter instance
-  matter = new MatterInstance(matterName, matterOptions);
+export * as Reducers from './reducers';
+export * as Actions from './actions';
+
+export function createMiddleware(groutName, groutOptions) {
+  //Create singleton instance of grout using provided project name and options
+  grout = new GroutInstance(groutName, groutOptions);
+  //Return middleware (which imports the new grout instance)
+  return Middleware;
 }
-export function getMatter() {
-  return matter;
+
+let grout;
+//Export grout instance
+export function getGrout() {
+  if(!grout){
+    throw Error('You must call createMiddleware before using ');
+  }
+  return grout;
 }
-export const logger = matter.utils.logger;
-export const dom = matter.utils.dom;
-export const storage = matter.utils.envStorage;
+//Create new grout instance
+export function createGrout(groutName, groutOptions) {
+  //TODO: Handle being passed a grout instance
+  return grout = new GroutInstance(groutName, groutOptions);
+}

@@ -1,5 +1,4 @@
-
-import { CALL_GROUT, Schemas } from './middleware'
+import { CALL_GROUT, Schemas } from '../middleware'
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
