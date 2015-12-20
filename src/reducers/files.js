@@ -1,7 +1,7 @@
 import {
   FILES_OPEN,
-  FINISH_LOAD_FILES,
-  FINISH_SYNC_FILES
+  GET_FILES_SUCCESS,
+  GET_FILE_SUCCESS
 } from '../actions/files';
 import {merge, union, clone} from 'lodash';
 
@@ -13,7 +13,8 @@ export default function files(
   },
   action) {
   switch (action.type) {
-  case FINISH_LOAD_FILES:
+  case GET_FILES_SUCCESS:
+    console.log('get files success reducer:', action);
     if(!state[action.projectName]){
       state[action.projectName] = [];
     }
@@ -23,7 +24,7 @@ export default function files(
     newState[action.projectName] = newFiles;
     return merge({}, state, newState);
     break;
-  case FINISH_SYNC_FILES:
+  case GET_FILE_SUCCESS:
     let syncState = state;
     if(!state[action.projectName]){
       syncState[action.projectName] = [];
