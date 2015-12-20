@@ -1,6 +1,6 @@
 {
   "name": "redux-grout",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Redux tools for Grout library.",
   "main": "lib/index.js",
   "scripts": {
@@ -48,7 +48,6 @@
     "humps": "^1.0.0",
     "kyper-grout": "0.0.18",
     "lodash": "^3.10.1",
-    "normalizr": "^1.4.0",
-    "redux-router": "^0.1.0"
+    "normalizr": "^1.4.0"
   }
 }

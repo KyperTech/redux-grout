@@ -11,8 +11,7 @@ export function login(loginData) {
       types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
       method: 'login',
       methodData: loginData,
-      schema: Schemas.ACCOUNT,
-      redirect: '/' + loginData.redirect.replace('/') || '/'
+      schema: Schemas.ACCOUNT
     }
   }
 }
