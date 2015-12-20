@@ -1,6 +1,6 @@
 {
   "name": "redux-grout",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Redux tools for Grout library.",
   "main": "lib/index.js",
   "scripts": {

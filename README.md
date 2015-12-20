@@ -33,9 +33,11 @@ Add reducers to combineReducers function:
 import { combineReducers } from 'redux';
 import { routerStateReducer } from 'redux-router';
 import { Reducers } from 'redux-grout';
+const { account, files, entities} = Reducers;
 const rootReducer = combineReducers({
-  account: Reducers.account,
-  entities: Reducers.entities,
+  account,
+  files,
+  entities,
   router: routerStateReducer
 });
 
@@ -72,7 +74,7 @@ class Main extends Component {
 //Place state of redux store into props of component
 function mapStateToProps(state) {
   return {
-    account: state.account
+    account: (state.entities.accounts && state.account.id) ?  state.entities.accounts[state.account.id] || null
   };
 }
 //Place action methods into props
