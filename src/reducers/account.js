@@ -7,6 +7,7 @@ import {
   LOGOUT_SUCCESS
 } from '../actions';
 import { merge } from 'lodash';
+import { pushState } from 'redux-router';
 export function account(state = {
   isFetching: false,
   id: null
@@ -16,6 +17,9 @@ export function account(state = {
     return merge({}, state, {isFetching: true});
   case LOGIN_SUCCESS:
     console.log('successful login action recieved in reducer', action);
+    if(action.redirect){
+      pushState(null, action.redirect);
+    }
     return merge({}, state, {isFetching: false, id: action.response.result});
   case SIGNUP_REQUEST:
     return merge({}, state, {isFetching: true});

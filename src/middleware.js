@@ -2,33 +2,26 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import { getGrout } from './index';
-
+import { each, isObject } from 'lodash';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-function callGrout(method, schema, callData, model) {
-  let grout = getGrout();
-  if(model){
-    console.log('calling grout from middleware:')
-    return grout[model][method](callData).then((response) => {
-      console.log('grout responed:', response);
-      const camelizedJson = camelizeKeys(response)
-      return Object.assign({},
-        normalize(camelizedJson, schema))
-    }, (err) => {
-      console.error('Error calling grout');
-    });
-  } else {
-    console.log('calling grout from middleware:');
-    return grout[method](callData).then((response) => {
-      console.log('grout responed:', response);
-      const camelizedJson = camelizeKeys(response)
-      return Object.assign({},
-        normalize(camelizedJson, schema))
-    }, (err) => {
-      console.error('Error calling grout');
-    });
-  }
-
+function callGrout(callInfoObj) {
+  const { model, modelData, subModel, subModelData, method, methodData, schema } = callInfoObj;
+  let promiseCall = getGrout();
+  let callPiecesArray = [ model, modelData, subModel, subModelData, method, methodData ];
+  each(callPiecesArray, (piece) => {
+    if(piece) {
+      promiseCall = isObject(piece) ? promiseCall(piece) : promiseCall[piece];
+    }
+  });
+  return promiseCall.then((response) => {
+    console.log('grout responed:', response);
+    const camelizedJson = camelizeKeys(response)
+    return Object.assign({},
+      normalize(camelizedJson, schema))
+  }, (err) => {
+    console.error('Error calling grout', err);
+  });
 }
 
 // We use this Normalizr schemas to transform API responses from a nested form
@@ -43,6 +36,12 @@ const accountSchema = new Schema('accounts', {
   idAttribute: 'id'
 })
 const projectSchema = new Schema('projects', {
+  idAttribute: 'id'
+})
+const templateSchema = new Schema('templates', {
+  idAttribute: 'id'
+})
+const groupSchema = new Schema('groups', {
   idAttribute: 'id'
 })
 projectSchema.define({
@@ -67,8 +66,8 @@ export default store => next => action => {
     return next(action)
   }
 
-  let { model, method, callData } = callAPI
-  const { schema, types } = callAPI
+  let { model, modelData, subModel, subModelData, method, methodData } = callAPI
+  const { schema, types, redirect } = callAPI
   if(model) {
     console.warn('Model was provided');
   }
@@ -98,15 +97,16 @@ export default store => next => action => {
 
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
-  console.log('calling grout', method, schema, callData);
-  return callGrout(method, schema, callData, model).then(
+  const callInfoObj = { model, modelData, subModel, subModelData, method, methodData, schema };
+  console.log('calling grout', callInfoObj);
+  return callGrout(callInfoObj).then(
     response => next(actionWith({
       response,
       type: successType
     })),
     error => next(actionWith({
       type: failureType,
-      error: error.message || 'Something bad happened'
+      error: error.message || JSON.stringify(error) || 'Something bad happened'
     }))
   )
 }
