@@ -8,17 +8,17 @@ import { each, isObject } from 'lodash';
 function callGrout(callInfoObj) {
   const { model, modelData, subModel, subModelData, method, methodData, schema } = callInfoObj;
   let promiseCall = getGrout();
-  let callPiecesArray = [ model, modelData, subModel, subModelData, method, methodData ];
+  let callPiecesArray = [ model, modelData, subModel, subModelData ];
   each(callPiecesArray, (piece) => {
-    if(piece) {
+    if(piece && typeof piece !== 'undefined') {
       promiseCall = isObject(piece) ? promiseCall(piece) : promiseCall[piece];
     }
   });
-  return promiseCall.then((response) => {
-    console.log('grout responed:', response);
+  return promiseCall[method](methodData).then((response) => {
     const camelizedJson = camelizeKeys(response)
-    return Object.assign({},
-      normalize(camelizedJson, schema))
+    let endResult = Object.assign({}, normalize(camelizedJson, schema))
+    console.log('normalized result:', endResult);
+    return endResult;
   }, (err) => {
     console.error('Error calling grout', err);
   });
@@ -52,7 +52,9 @@ export const Schemas = {
   ACCOUNT: accountSchema,
   ACCOUNT_ARRAY: arrayOf(accountSchema),
   PROJECT: projectSchema,
-  PROJECT_ARRAY: arrayOf(projectSchema)
+  PROJECT_ARRAY: arrayOf(projectSchema),
+  GROUP: groupSchema,
+  GROUP_ARRAY: arrayOf(groupSchema)
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.
@@ -68,23 +70,23 @@ export default store => next => action => {
 
   let { model, modelData, subModel, subModelData, method, methodData } = callAPI
   const { schema, types, redirect } = callAPI
-  if(model) {
-    console.warn('Model was provided');
-  }
 
   if (typeof method === 'function') {
     method = method(store.getState())
   }
 
   if (typeof method !== 'string') {
-    throw new Error('Specify a string method URL.')
+    throw new Error('Specify a method.')
   }
+
   if (!schema) {
     throw new Error('Specify one of the exported Schemas.')
   }
+
   if (!Array.isArray(types) || types.length !== 3) {
     throw new Error('Expected an array of three action types.')
   }
+
   if (!types.every(type => typeof type === 'string')) {
     throw new Error('Expected action types to be strings.')
   }
@@ -98,7 +100,6 @@ export default store => next => action => {
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
   const callInfoObj = { model, modelData, subModel, subModelData, method, methodData, schema };
-  console.log('calling grout', callInfoObj);
   return callGrout(callInfoObj).then(
     response => next(actionWith({
       response,

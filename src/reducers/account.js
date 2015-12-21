@@ -8,8 +8,7 @@ import {
 } from '../actions';
 import { merge } from 'lodash';
 export function account(state = {
-  isFetching: false,
-  id: null
+  isFetching: false
 }, action) {
   switch (action.type) {
   case LOGIN_REQUEST:
@@ -24,7 +23,7 @@ export function account(state = {
   case LOGOUT_REQUEST:
     return merge({}, state, {isFetching: true, id: null});
   case LOGOUT_SUCCESS:
-    return merge({}, {isFetching: false, id: null});
+    return merge({}, {isFetching: false});
   default:
     return state;
   }
