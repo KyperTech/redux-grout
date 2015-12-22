@@ -40,8 +40,7 @@ export function logout() {
   return {
     [CALL_GROUT]: {
       types: [ LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE ],
-      method: 'logout',
-      schema: Schemas.ACCOUNT
+      method: 'logout'
     }
   }
 }

@@ -15,9 +15,13 @@ function callGrout(callInfoObj) {
     }
   });
   return promiseCall[method](methodData).then((response) => {
-    const camelizedJson = camelizeKeys(response)
-    let endResult = Object.assign({}, normalize(camelizedJson, schema))
-    console.log('normalized result:', endResult);
+    let endResult;
+    if(schema){
+      const camelizedJson = camelizeKeys(response)
+      endResult = Object.assign({}, normalize(camelizedJson, schema))
+    } else {
+      endResult = response;
+    }
     return endResult;
   }, (err) => {
     console.error('Error calling grout', err);
@@ -77,10 +81,6 @@ export default store => next => action => {
 
   if (typeof method !== 'string') {
     throw new Error('Specify a method.')
-  }
-
-  if (!schema) {
-    throw new Error('Specify one of the exported Schemas.')
   }
 
   if (!Array.isArray(types) || types.length !== 3) {

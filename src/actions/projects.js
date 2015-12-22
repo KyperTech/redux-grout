@@ -5,7 +5,6 @@ export const GET_PROJECTS_SUCCESS = 'GET_PROJECTS_SUCCESS';
 export const GET_PROJECTS_FAILURE = 'GET_PROJECTS_FAILURE';
 
 export function getProjects() {
-  console.log('getProjects action called.');
   return {
     [CALL_GROUT]: {
       types: [ GET_PROJECTS_REQUEST, GET_PROJECTS_SUCCESS, GET_PROJECTS_FAILURE ],
@@ -20,8 +19,8 @@ export const NEW_PROJECT_REQUEST = 'NEW_PROJECT_REQUEST';
 export const NEW_PROJECT_SUCCESS = 'NEW_PROJECT_SUCCESS';
 export const NEW_PROJECT_FAILURE = 'NEW_PROJECT_FAILURE';
 
-export function newProject(projectData) {
-  console.log('newProject action called.', projectData);
+export function addProject(projectData) {
+  console.log('addProject action called.', projectData);
   return {
     [CALL_GROUT]: {
       types: [ NEW_PROJECT_REQUEST, NEW_PROJECT_SUCCESS, NEW_PROJECT_FAILURE ],
@@ -60,7 +59,7 @@ export function deleteProject(projectData) {
       types: [ DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE ],
       model: 'Project',
       modelData: projectName,
-      method: 'del',
+      method: 'remove',
       schema: Schemas.PROJECT
     }
   }

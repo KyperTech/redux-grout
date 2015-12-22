@@ -6,6 +6,7 @@ import GroutInstance from './grout';
 
 export * as Reducers from './reducers';
 export * as Actions from './actions';
+let grout;
 
 export function createMiddleware(groutName, groutOptions) {
   //Create singleton instance of grout using provided project name and options
@@ -14,7 +15,6 @@ export function createMiddleware(groutName, groutOptions) {
   return Middleware;
 }
 
-let grout;
 //Export grout instance
 export function getGrout() {
   // if(!grout){
