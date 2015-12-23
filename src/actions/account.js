@@ -10,8 +10,7 @@ export function login(loginData) {
     [CALL_GROUT]: {
       types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
       method: 'login',
-      methodData: loginData,
-      schema: Schemas.ACCOUNT
+      methodData: loginData
     }
   }
 }
@@ -26,8 +25,7 @@ export function signup(signupData) {
     [CALL_GROUT]: {
       types: [ SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE ],
       method: 'signup',
-      methodData: signupData,
-      schema: Schemas.ACCOUNT
+      methodData: signupData
     }
   }
 }

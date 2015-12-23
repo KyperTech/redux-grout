@@ -15,6 +15,7 @@ function callGrout(callInfoObj) {
     }
   });
   return promiseCall[method](methodData).then((response) => {
+    // console.log('grout responded:', response);
     let endResult;
     if(schema){
       const camelizedJson = camelizeKeys(response)
@@ -49,7 +50,8 @@ const groupSchema = new Schema('groups', {
   idAttribute: 'id'
 })
 projectSchema.define({
-  owner: accountSchema
+  owner: accountSchema,
+  collaborators: arrayOf(accountSchema)
 })
 // Schemas for Github API responses.
 export const Schemas = {
