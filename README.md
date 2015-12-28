@@ -74,7 +74,7 @@ class Main extends Component {
 //Place state of redux store into props of component
 function mapStateToProps(state) {
   return {
-    account: (state.entities.accounts && state.account.id) ?  state.entities.accounts[state.account.id] || null
+    account: state.account
   };
 }
 //Place action methods into props

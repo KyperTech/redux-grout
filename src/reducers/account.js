@@ -14,12 +14,10 @@ export function account(state = {
   case LOGIN_REQUEST:
     return merge({}, state, {isFetching: true});
   case LOGIN_SUCCESS:
-    // console.log('successful login action recieved in reducer', action);
     return merge({}, state, {isFetching: false}, action.response);
   case SIGNUP_REQUEST:
     return merge({}, state, {isFetching: true});
   case SIGNUP_SUCCESS:
-    // console.log('successful signup action recieved in reducer', action);
     return merge({}, state, {isFetching: false}, action.response);
   case LOGOUT_REQUEST:
     return merge({}, state, {isFetching: true});

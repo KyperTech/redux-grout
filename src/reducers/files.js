@@ -4,8 +4,7 @@ import {
   GET_FILE_SUCCESS
 } from '../actions/files';
 import {merge, union, clone} from 'lodash';
-
-export default function files(
+export function files(
   state = {
     example: [
       {name: 'index.html'}
@@ -14,7 +13,7 @@ export default function files(
   action) {
   switch (action.type) {
   case GET_FILES_SUCCESS:
-    console.log('get files success reducer:', action);
+    // console.log('get files success reducer:', action);
     if(!state[action.projectName]){
       state[action.projectName] = [];
     }

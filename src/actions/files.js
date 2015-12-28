@@ -6,7 +6,7 @@ export const GET_FILES_SUCCESS = 'GET_FILES_SUCCESS';
 export const GET_FILES_FAILURE = 'GET_FILES_FAILURE';
 
 export function getFiles(getData) {
-  console.log('getFiles action called.', getData);
+  // console.log('getFiles action called.', getData);
   if(!has(getData, 'projectName')){
     console.error({
       description: 'ProjectName is required to load files.',
@@ -31,7 +31,7 @@ export const GET_FILE_SUCCESS = 'GET_FILE_SUCCESS';
 export const GET_FILE_FAILURE = 'GET_FILE_FAILURE';
 
 export function getFile(getData) {
-  console.log('getFile action called.', getData);
+  // console.log('getFile action called.', getData);
   return {
     [CALL_GROUT]: {
       types: [ GET_FILE_REQUEST, GET_FILE_SUCCESS, GET_FILE_FAILURE ],

@@ -1,6 +1,3 @@
-/** grout Singleton
- */
-
 import Middleware from './middleware';
 import GroutInstance from './grout';
 

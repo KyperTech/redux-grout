@@ -5,7 +5,6 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 export function login(loginData) {
-  console.log('Login action called.', loginData);
   return {
     [CALL_GROUT]: {
       types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
@@ -20,7 +19,6 @@ export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
 
 export function signup(signupData) {
-  console.log('Signup action called.', signupData);
   return {
     [CALL_GROUT]: {
       types: [ SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE ],

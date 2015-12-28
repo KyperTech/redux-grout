@@ -5,7 +5,7 @@ import Grout from 'kyper-grout';
 
 //Default configuration options
 let defaultOptions = {
-	logLevel: 'trace'
+	logLevel: 'warn'
 };
 
 let instance = null;
