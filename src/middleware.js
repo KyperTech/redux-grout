@@ -14,6 +14,7 @@ function callGrout(callInfoObj) {
       promiseCall = isObject(piece) ? promiseCall(piece) : promiseCall[piece];
     }
   });
+  console.log('promise call:', promiseCall);
   return promiseCall[method](methodData).then((response) => {
     // console.log('grout responded:', response);
     let endResult;
