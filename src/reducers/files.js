@@ -5,11 +5,7 @@ import {
 } from '../actions/files';
 import {merge, union, clone} from 'lodash';
 export function files(
-  state = {
-    example: [
-      {name: 'index.html'}
-    ]
-  },
+  state = {},
   action) {
   switch (action.type) {
   case GET_FILES_SUCCESS:

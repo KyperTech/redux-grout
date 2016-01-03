@@ -2,19 +2,20 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import { getGrout } from './index';
-import { each, isObject } from 'lodash';
+import { each, isObject, isString } from 'lodash';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 function callGrout(callInfoObj) {
   const { model, modelData, subModel, subModelData, method, methodData, schema } = callInfoObj;
   let promiseCall = getGrout();
-  let callPiecesArray = [ model, modelData, subModel, subModelData ];
-  each(callPiecesArray, (piece) => {
-    if(piece && typeof piece !== 'undefined') {
-      promiseCall = isObject(piece) ? promiseCall(piece) : promiseCall[piece];
-    }
-  });
-  console.log('promise call:', promiseCall);
+  promiseCall = promiseCall[model];
+  if(modelData && isString(modelData)){
+    promiseCall = promiseCall(modelData);
+  }
+  promiseCall = promiseCall[subModel];
+  if(subModelData){
+    promiseCall = promiseCall(subModelData);
+  }
   return promiseCall[method](methodData).then((response) => {
     // console.log('grout responded:', response);
     let endResult;
@@ -42,7 +43,7 @@ const accountSchema = new Schema('accounts', {
   idAttribute: 'id'
 })
 const projectSchema = new Schema('projects', {
-  idAttribute: 'id'
+  idAttribute: 'name'
 })
 const templateSchema = new Schema('templates', {
   idAttribute: 'id'
@@ -75,7 +76,7 @@ export default store => next => action => {
     return next(action)
   }
 
-  let { model, modelData, subModel, subModelData, method, methodData } = callAPI
+  let { model, modelData, subModel, subModelData, method, methodData, cb } = callAPI
   const { schema, types, redirect } = callAPI
 
   if (typeof method === 'function') {
@@ -105,10 +106,9 @@ export default store => next => action => {
   const callInfoObj = { model, modelData, subModel, subModelData, method, methodData, schema };
   return callGrout(callInfoObj).then(
     response => next(actionWith({
-      response,
-      type: successType
-    })),
-    error => next(actionWith({
+        response,
+        type: successType
+      })), error => next(actionWith({
       type: failureType,
       error: error.message || JSON.stringify(error) || 'Something bad happened'
     }))

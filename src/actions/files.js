@@ -29,7 +29,7 @@ export const ADD_FILES_SUCCESS = 'ADD_FILES_SUCCESS';
 export const ADD_FILES_FAILURE = 'ADD_FILES_FAILURE';
 
 export function addFiles(filesData) {
-  console.log('add files action called', filesData);
+  // console.log('add files action called', filesData);
   if(!has(filesData, 'projectName')){
     console.error({
       description: 'ProjectName is required to load files.', filesData
@@ -65,6 +65,35 @@ export function getFile(getData) {
   }
 }
 
+export const ADD_FILE_REQUEST = 'ADD_FILE_REQUEST';
+export const ADD_FILE_SUCCESS = 'ADD_FILE_SUCCESS';
+export const ADD_FILE_FAILURE = 'ADD_FILE_FAILURE';
+
+export function addFile(addData) {
+  // console.log('add file action called', addData);
+  if(!has(addData, 'projectName')){
+    console.error({
+      description: 'ProjectName is required to add a file.', addData
+    });
+    return {type: ADD_FILE_FAILURE, payload: {message: 'ProjectName is required to get files.'}};
+  }
+  if(!has(addData, 'path')){
+    console.error({
+      description: 'Path is required to add file.', addData
+    });
+    return {type: ADD_FILE_FAILURE, payload: {message: 'ProjectName is required to get files.'}};
+  }
+  return {
+    [CALL_GROUT]: {
+      types: [ ADD_FILE_REQUEST, ADD_FILE_SUCCESS, ADD_FILE_FAILURE ],
+      model: 'Project',
+      modelData: addData.projectName,
+      subModel: 'Files',
+      method: 'add',
+      methodData: {path: addData.path}
+    }
+  }
+}
 
 export const DELETE_FILE_REQUEST = 'DELETE_FILE_REQUEST';
 export const DELETE_FILE_SUCCESS = 'DELETE_FILE_SUCCESS';

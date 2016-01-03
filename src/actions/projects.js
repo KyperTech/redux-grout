@@ -14,16 +14,31 @@ export function getProjects() {
     }
   }
 }
+export const GET_PROJECT_REQUEST = 'GET_PROJECT_REQUEST';
+export const GET_PROJECT_SUCCESS = 'GET_PROJECT_SUCCESS';
+export const GET_PROJECT_FAILURE = 'GET_PROJECT_FAILURE';
 
-export const NEW_PROJECT_REQUEST = 'NEW_PROJECT_REQUEST';
-export const NEW_PROJECT_SUCCESS = 'NEW_PROJECT_SUCCESS';
-export const NEW_PROJECT_FAILURE = 'NEW_PROJECT_FAILURE';
-
-export function addProject(projectData) {
-  console.log('addProject action called.', projectData);
+export function getProject(projectData) {
+  // console.log('getProject action called.', projectData);
   return {
     [CALL_GROUT]: {
-      types: [ NEW_PROJECT_REQUEST, NEW_PROJECT_SUCCESS, NEW_PROJECT_FAILURE ],
+      types: [ GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE ],
+      model: 'Project',
+      modelData: projectData.name || projectData.projectName,
+      method: 'get',
+      schema: Schemas.PROJECT
+    }
+  }
+}
+export const ADD_PROJECT_REQUEST = 'ADD_PROJECT_REQUEST';
+export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
+export const ADD_PROJECT_FAILURE = 'ADD_PROJECT_FAILURE';
+
+export function addProject(projectData) {
+  // console.log('addProject action called.', projectData);
+  return {
+    [CALL_GROUT]: {
+      types: [ ADD_PROJECT_REQUEST, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILURE ],
       model: 'Projects',
       method: 'add',
       methodData: projectData,
