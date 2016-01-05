@@ -8,14 +8,20 @@ import { each, isObject, isString } from 'lodash';
 function callGrout(callInfoObj) {
   const { model, modelData, subModel, subModelData, method, methodData, schema } = callInfoObj;
   let promiseCall = getGrout();
-  promiseCall = promiseCall[model];
-  if(modelData && isString(modelData)){
-    promiseCall = promiseCall(modelData);
+  if(model){
+    promiseCall = isObject(modelData) ? promiseCall(modelData) : promiseCall[model];
   }
-  promiseCall = promiseCall[subModel];
+  if(subModel){
+    promiseCall = promiseCall[subModel];
+  }
   if(subModelData){
     promiseCall = promiseCall(subModelData);
   }
+  console.log('model', model);
+  console.log('subModel', subModel);
+  console.log('subModelData', subModelData);
+  console.log('method', method);
+  console.log('methodData', methodData);
   return promiseCall[method](methodData).then((response) => {
     // console.log('grout responded:', response);
     let endResult;
