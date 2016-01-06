@@ -99,15 +99,27 @@ export const DELETE_FILE_REQUEST = 'DELETE_FILE_REQUEST';
 export const DELETE_FILE_SUCCESS = 'DELETE_FILE_SUCCESS';
 export const DELETE_FILE_FAILURE = 'DELETE_FILE_FAILURE';
 
-export function deleteFile(projectData) {
-  let projectName = (isObject(projectData) && has(projectData, 'name')) ? projectData.name : projectData;
+export function deleteFile(deleteData) {
+  if(!has(deleteData, 'projectName')){
+    console.error({
+      description: 'ProjectName is required to add a file.', deleteData
+    });
+    return {type: DELETE_FILE_FAILURE, payload: {message: 'ProjectName is required to delete files.'}};
+  }
+  if(!has(deleteData, 'path')){
+    console.error({
+      description: 'Path is required to delete file.', deleteData
+    });
+    return {type: DELETE_FILE_FAILURE, payload: {message: 'ProjectName is required to delete files.'}};
+  }
   return {
     [CALL_GROUT]: {
       types: [ DELETE_FILE_REQUEST, DELETE_FILE_SUCCESS, DELETE_FILE_FAILURE ],
       model: 'Project',
-      modelData: projectName,
+      modelData: deleteData.projectName,
       subModel: 'File',
-      method: 'del'
+      subModelData: {path: deleteData.path},
+      method: 'remove'
     }
   }
 }
