@@ -9,7 +9,7 @@ function callGrout(callInfoObj) {
   const { model, modelData, subModel, subModelData, method, methodData, schema } = callInfoObj;
   let promiseCall = getGrout();
   if(model){
-    promiseCall = isObject(modelData) ? promiseCall(modelData) : promiseCall[model];
+    promiseCall = (isObject(modelData) || isString(modelData)) ? promiseCall[model](modelData) : promiseCall[model];
   }
   if(subModel){
     promiseCall = promiseCall[subModel];
@@ -17,11 +17,11 @@ function callGrout(callInfoObj) {
   if(subModelData){
     promiseCall = promiseCall(subModelData);
   }
-  console.log('model', model);
-  console.log('subModel', subModel);
-  console.log('subModelData', subModelData);
-  console.log('method', method);
-  console.log('methodData', methodData);
+  // console.log('model', model);
+  // console.log('subModel', subModel);
+  // console.log('subModelData', subModelData);
+  // console.log('method', method);
+  // console.log('methodData', methodData);
   return promiseCall[method](methodData).then((response) => {
     // console.log('grout responded:', response);
     let endResult;
@@ -61,7 +61,7 @@ projectSchema.define({
   owner: accountSchema,
   collaborators: arrayOf(accountSchema)
 })
-// Schemas for Github API responses.
+// Schemas for Tessellate API responses
 export const Schemas = {
   ACCOUNT: accountSchema,
   ACCOUNT_ARRAY: arrayOf(accountSchema),

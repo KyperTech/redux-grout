@@ -43,7 +43,7 @@ export function addFiles(filesData) {
       modelData: filesData.projectName,
       subModel: 'Files',
       method: 'add',
-      methodData: filesData
+      methodData: filesData.files
     }
   }
 }
