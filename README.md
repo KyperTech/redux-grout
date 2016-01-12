@@ -2,9 +2,9 @@
 
 [![npm version](https://img.shields.io/npm/v/redux-grout.svg?style=flat-square)](https://www.npmjs.com/package/redux-grout)
 [![npm downloads](https://img.shields.io/npm/dm/redux-grout.svg?style=flat-square)](https://www.npmjs.com/package/redux-grout)
-[![build status](https://img.shields.io/travis/KyperTech/matter/master.svg?style=flat-square)](https://travis-ci.org/KyperTech/redux-grout)
+[![build status](https://img.shields.io/travis/KyperTech/redux-grout/master.svg?style=flat-square)](https://travis-ci.org/KyperTech/redux-grout)
 [![dependencies status](https://img.shields.io/david/KyperTech/redux-grout/master.svg?style=flat-square)](https://david-dm.org/KyperTech/redux-grout)
-[![license](https://img.shields.io/npm/l/redux-grout.svg?style=flat-square)](https://github.com/KyperTech/matter/blob/master/LICENSE)
+[![license](https://img.shields.io/npm/l/redux-grout.svg?style=flat-square)](https://github.com/KyperTech/redux-grout/blob/master/LICENSE)
 
 Redux middleware, actions, and reducers for [Grout](https://github.com/kypertech/grout).
 

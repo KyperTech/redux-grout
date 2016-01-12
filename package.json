@@ -1,6 +1,6 @@
 {
   "name": "redux-grout",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Redux tools for Grout library.",
   "main": "lib/index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "kyper",
     "react"
   ],
-  "author": "Kyper LLC <kyper.dev@gmail.com>",
+  "author": "Kyper Digital Inc. <kyper.dev@gmail.com>",
   "contributors": [
     {
       "name": "Scott Prue",
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "humps": "^1.0.0",
-    "kyper-grout": "0.1.6",
+    "kyper-grout": "0.1.7",
     "lodash": "^3.10.1",
     "normalizr": "^1.4.0"
   }

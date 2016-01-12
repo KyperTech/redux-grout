@@ -40,3 +40,16 @@ export function logout() {
     }
   }
 }
+export const RECOVER_REQUEST = 'RECOVER_REQUEST';
+export const RECOVER_SUCCESS = 'RECOVER_SUCCESS';
+export const RECOVER_FAILURE = 'RECOVER_FAILURE';
+
+export function recover(recoverData) {
+  return {
+    [CALL_GROUT]: {
+      types: [ RECOVER_REQUEST, RECOVER_SUCCESS, RECOVER_FAILURE ],
+      method: 'recoverAccount',
+      methodData: recoverData
+    }
+  }
+}

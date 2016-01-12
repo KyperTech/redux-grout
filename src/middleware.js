@@ -35,6 +35,7 @@ function callGrout(callInfoObj) {
     return endResult;
   }, (err) => {
     console.error('Error calling grout', err);
+    return Promise.reject(err);
   });
 }
 
@@ -117,7 +118,7 @@ export default store => next => action => {
         type: successType
       })), error => next(actionWith({
       type: failureType,
-      error: error.message || JSON.stringify(error) || 'Something bad happened'
+      error: error.message || error || 'Something bad happened'
     }))
   )
 }

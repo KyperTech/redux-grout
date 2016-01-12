@@ -1,4 +1,5 @@
 import { isObject, has } from 'lodash';
+import { getProjectFromData } from './index';
 import { CALL_GROUT, Schemas } from '../middleware'
 export const GET_PROJECTS_REQUEST = 'GET_PROJECTS_REQUEST';
 export const GET_PROJECTS_SUCCESS = 'GET_PROJECTS_SUCCESS';
@@ -20,11 +21,16 @@ export const GET_PROJECT_FAILURE = 'GET_PROJECT_FAILURE';
 
 export function getProject(projectData) {
   // console.log('getProject action called.', projectData);
+  let project = getProjectFromData(projectData);
+  if(!project){
+    console.error({ description: 'Project data is required to get project.', projectData });
+    return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to get project.'}};
+  }
   return {
     [CALL_GROUT]: {
       types: [ GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE ],
       model: 'Project',
-      modelData: projectData.name || projectData.projectName,
+      modelData: project,
       method: 'get',
       schema: Schemas.PROJECT
     }
@@ -51,11 +57,16 @@ export const UPDATE_PROJECT_SUCCESS = 'UPDATE_PROJECT_SUCCESS';
 export const UPDATE_PROJECT_FAILURE = 'UPDATE_PROJECT_FAILURE';
 
 export function updateProject(projectData) {
+  let project = getProjectFromData(projectData);
+  if(!project){
+    console.error({ description: 'Project data is required to update project.', projectData });
+    return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to update project.'}};
+  }
   return {
     [CALL_GROUT]: {
       types: [ UPDATE_PROJECT_REQUEST, UPDATE_PROJECT_SUCCESS, UPDATE_PROJECT_FAILURE ],
       model: 'Project',
-      modelData: projectData.name,
+      modelData: project,
       method: 'update',
       methodData: projectData,
       schema: Schemas.PROJECT
@@ -68,12 +79,16 @@ export const DELETE_PROJECT_SUCCESS = 'DELETE_PROJECT_SUCCESS';
 export const DELETE_PROJECT_FAILURE = 'DELETE_PROJECT_FAILURE';
 
 export function deleteProject(projectData) {
-  let projectName = (isObject(projectData) && has(projectData, 'name')) ? projectData.name : projectData;
+  let project = getProjectFromData(projectData);
+  if(!project){
+    console.error({ description: 'Project data is required to delete project.', projectData });
+    return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to delete project.'}};
+  }
   return {
     [CALL_GROUT]: {
       types: [ DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE ],
       model: 'Project',
-      modelData: projectName,
+      modelData: project,
       method: 'remove',
       schema: Schemas.PROJECT
     }
