@@ -194,10 +194,11 @@ export function addFolder(addData) {
       modelData: project,
       subModel: 'Files',
       method: 'addFolder',
-      methodData: { path }
+      methodData: [path, name]
     }
   }
 }
+
 function getProjectFromData(data) {
   const { project, projectName } = data;
   let modelData = {};
