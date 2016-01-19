@@ -2,29 +2,23 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import { getGrout } from './index';
-import { each, isObject, isString } from 'lodash';
+import { each, isObject, isString, isArray } from 'lodash';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 function callGrout(callInfoObj) {
-  const { model, modelData, subModel, subModelData, method, methodData, schema } = callInfoObj;
-  let promiseCall = getGrout();
+  const { model, modelData, subModel, subModelData, method, schema } = callInfoObj;
+  let { methodData } = callInfoObj;
+  let grout = getGrout();
   if(model){
-    promiseCall = (isObject(modelData) || isString(modelData)) ? promiseCall[model](modelData) : promiseCall[model];
+    grout = (isObject(modelData) || isString(modelData)) ? grout[model](modelData) : grout[model];
   }
   if(subModel){
-    promiseCall = promiseCall[subModel];
+    grout = grout[subModel];
   }
-  if(subModelData){
-    promiseCall = promiseCall(subModelData);
+  if (!isArray(methodData)) {
+    methodData = [methodData]
   }
-  // console.log('model', model);
-  // console.log('modelData', modelData);
-  // console.log('subModel', subModel);
-  // console.log('subModelData', subModelData);
-  // console.log('method', method);
-  // console.log('methodData', methodData);
-  return promiseCall[method](methodData).then((response) => {
-    // console.log('grout responded:', response);
+  return grout[method].apply(grout, methodData).then((response) => {
     let endResult;
     if(schema){
       const camelizedJson = camelizeKeys(response)
