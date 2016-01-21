@@ -6,17 +6,20 @@ import { each, isObject, isString, isArray } from 'lodash';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 function callGrout(callInfoObj) {
-  const { model, modelData, subModel, subModelData, method, schema } = callInfoObj;
-  let { methodData } = callInfoObj;
+  const { model, subModel, subModelData, method, schema } = callInfoObj;
+  let { modelData, methodData } = callInfoObj;
   let grout = getGrout();
+  if (!isArray(modelData)) {
+    modelData = [modelData];
+  }
   if(model){
-    grout = (isObject(modelData) || isString(modelData)) ? grout[model](modelData) : grout[model];
+    grout = (isObject(modelData) || isString(modelData)) ? grout[model].apply(grout, modelData) : grout[model];
   }
   if(subModel){
     grout = grout[subModel];
   }
   if (!isArray(methodData)) {
-    methodData = [methodData]
+    methodData = [methodData];
   }
   return grout[method].apply(grout, methodData).then((response) => {
     let endResult;

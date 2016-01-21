@@ -20,7 +20,6 @@ export const GET_PROJECT_SUCCESS = 'GET_PROJECT_SUCCESS';
 export const GET_PROJECT_FAILURE = 'GET_PROJECT_FAILURE';
 
 export function getProject(projectData) {
-  // console.log('getProject action called.', projectData);
   let project = getProjectFromData(projectData);
   if(!project){
     console.error({ description: 'Project data is required to get project.', projectData });
@@ -41,7 +40,6 @@ export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
 export const ADD_PROJECT_FAILURE = 'ADD_PROJECT_FAILURE';
 
 export function addProject(projectData) {
-  // console.log('addProject action called.', projectData);
   return {
     [CALL_GROUT]: {
       types: [ ADD_PROJECT_REQUEST, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILURE ],

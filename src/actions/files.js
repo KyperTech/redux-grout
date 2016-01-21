@@ -21,7 +21,7 @@ export function getFiles(getData) {
       types: [ GET_FILES_REQUEST, GET_FILES_SUCCESS, GET_FILES_FAILURE ],
       model: 'Project',
       modelData: project,
-      subModel: 'Files',
+      subModel: 'Directory',
       method: 'get'
     }
   }
@@ -44,15 +44,15 @@ export function addFiles(filesData) {
     return {type: ADD_FILES_FAILURE, payload: {message: 'Project data is required to get a file.'}};
   }
   if(!filesData.files){
-    console.error('Files array is required to add files.');
-    return {type: ADD_FILES_FAILURE, payload: {message: 'Files list is required to add.'}};
+    console.error('Directory array is required to add files.');
+    return {type: ADD_FILES_FAILURE, payload: {message: 'Directory list is required to add.'}};
   }
   return {
     [CALL_GROUT]: {
       types: [ ADD_FILES_REQUEST, ADD_FILES_SUCCESS, ADD_FILES_FAILURE ],
       model: 'Project',
       modelData: project,
-      subModel: 'Files',
+      subModel: 'Directory',
       method: 'add',
       methodData: filesData.files
     }
@@ -70,7 +70,6 @@ export const GET_FILE_FAILURE = 'GET_FILE_FAILURE';
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
 export function getFile(getData) {
-  // console.log('getFile action called.', getData);
   const { path } = getData;
   let project = getProjectFromData(getData);
   if(!project){
@@ -120,8 +119,8 @@ export function addFile(addData) {
       types: [ ADD_FILE_REQUEST, ADD_FILE_SUCCESS, ADD_FILE_FAILURE ],
       model: 'Project',
       modelData: project,
-      subModel: 'Files',
-      method: 'add',
+      subModel: 'Directory',
+      method: 'addFile',
       methodData: { path }
     }
   }
@@ -139,7 +138,6 @@ export const DELETE_FILE_FAILURE = 'DELETE_FILE_FAILURE';
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
 export function deleteFile(deleteData) {
-  console.log('deleteFIle action called with:', deleteData);
   const { path } = deleteData;
   let projectData = getProjectFromData(deleteData);
   if(!projectData.name){
@@ -192,7 +190,7 @@ export function addFolder(addData) {
       types: [ ADD_FOLDER_REQUEST, ADD_FOLDER_SUCCESS, ADD_FOLDER_FAILURE ],
       model: 'Project',
       modelData: project,
-      subModel: 'Files',
+      subModel: 'Directory',
       method: 'addFolder',
       methodData: [path, name]
     }
