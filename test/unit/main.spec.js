@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as ReduxGrout from '../src';
+import * as ReduxGrout from '../../src';
 describe('redux-grout', () => {
   it('defines createMiddleware', () => {
     expect(ReduxGrout).to.have.property('createMiddleware');

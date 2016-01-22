@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Actions } from '../src';
+import { Actions } from '../../src';
 describe('Actions', () => {
   describe('Projects Actions', () => {
     it('is defined', () => {

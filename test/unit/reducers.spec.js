@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Reducers } from '../src';
+import { Reducers } from '../../src';
 describe('Reducers', () => {
   describe('Entities Reducer', () => {
     expect(Reducers.entities).to.be.a('function');

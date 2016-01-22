@@ -1,5 +1,5 @@
 import chai from 'chai';
-import groutMiddleware from '../src/middleware';
+import groutMiddleware from '../../src/middleware';
 
 describe('grout middleware', () => {
   const doDispatch = () => {};
