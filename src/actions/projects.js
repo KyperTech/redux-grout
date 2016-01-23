@@ -5,11 +5,16 @@ export const GET_PROJECTS_REQUEST = 'GET_PROJECTS_REQUEST';
 export const GET_PROJECTS_SUCCESS = 'GET_PROJECTS_SUCCESS';
 export const GET_PROJECTS_FAILURE = 'GET_PROJECTS_FAILURE';
 
-export function getProjects() {
+export function getProjects(username) {
+  if(!username){
+    console.error({ description: 'Username is required to get projects.', username });
+    return {type: GET_PROJECTS_FAILURE, payload: {message: 'Username is required to get projects.'}};
+  }
   return {
     [CALL_GROUT]: {
       types: [ GET_PROJECTS_REQUEST, GET_PROJECTS_SUCCESS, GET_PROJECTS_FAILURE ],
       model: 'Projects',
+      modelData: username,
       method: 'get',
       schema: Schemas.PROJECT_ARRAY
     }
