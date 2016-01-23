@@ -44,13 +44,14 @@ export const ADD_PROJECT_REQUEST = 'ADD_PROJECT_REQUEST';
 export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
 export const ADD_PROJECT_FAILURE = 'ADD_PROJECT_FAILURE';
 
-export function addProject(projectData) {
+export function addProject(name, username) {
   return {
     [CALL_GROUT]: {
       types: [ ADD_PROJECT_REQUEST, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILURE ],
       model: 'Projects',
+      modelData: [username],
       method: 'add',
-      methodData: projectData,
+      methodData: [name],
       schema: Schemas.PROJECT
     }
   }
