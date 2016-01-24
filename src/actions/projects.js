@@ -56,6 +56,7 @@ export function addProject(name, username) {
     }
   }
 }
+
 export const UPDATE_PROJECT_REQUEST = 'UPDATE_PROJECT_REQUEST';
 export const UPDATE_PROJECT_SUCCESS = 'UPDATE_PROJECT_SUCCESS';
 export const UPDATE_PROJECT_FAILURE = 'UPDATE_PROJECT_FAILURE';
@@ -64,7 +65,7 @@ export function updateProject(projectData) {
   let project = getProjectFromData(projectData);
   if(!project){
     console.error({ description: 'Project data is required to update project.', projectData });
-    return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to update project.'}};
+    return {type: UPDATE_PROJECT_FAILURE, payload: {message: 'Project data is required to update project.'}};
   }
   return {
     [CALL_GROUT]: {
@@ -86,7 +87,7 @@ export function deleteProject(projectData) {
   let project = getProjectFromData(projectData);
   if(!project){
     console.error({ description: 'Project data is required to delete project.', projectData });
-    return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to delete project.'}};
+    return {type: DELETE_PROJECT_FAILURE, payload: {message: 'Project data is required to delete project.'}};
   }
   return {
     [CALL_GROUT]: {
@@ -94,6 +95,29 @@ export function deleteProject(projectData) {
       model: 'Project',
       modelData: project,
       method: 'remove',
+      schema: Schemas.PROJECT
+    }
+  }
+}
+
+export const ADD_COLLABORATOR_REQUEST = 'ADD_COLLABORATOR_REQUEST';
+export const ADD_COLLABORATOR_SUCCESS = 'ADD_COLLABORATOR_SUCCESS';
+export const ADD_COLLABORATOR_FAILURE = 'ADD_COLLABORATOR_FAILURE';
+
+export function addCollaborator(user, project) {
+  console.log('adding collaborator with user:', user);
+  console.log('adding collaborator with project:', project);
+  if(!user){
+    console.error({ description: 'Collaborator should have user specified.', user });
+    return {type: ADD_COLLABORATOR_FAILURE, payload: {message: 'Collaborator should have user specified.'}};
+  }
+  return {
+    [CALL_GROUT]: {
+      types: [ ADD_COLLABORATOR_REQUEST, ADD_COLLABORATOR_SUCCESS, ADD_COLLABORATOR_FAILURE ],
+      model: 'Project',
+      modelData: [project.name, project.owner],
+      method: 'addCollaborators',
+      methodData: [user],
       schema: Schemas.PROJECT
     }
   }
