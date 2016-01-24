@@ -51,7 +51,7 @@ export function addProject(name, username) {
       model: 'Projects',
       modelData: [username],
       method: 'add',
-      methodData: [name],
+      methodData: [{name}],
       schema: Schemas.PROJECT
     }
   }

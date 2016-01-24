@@ -10,8 +10,7 @@ export const GET_FILES_FAILURE = 'GET_FILES_FAILURE';
  * @param {String} addData.project.name - Name of project to add file to
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
-export function getFiles(getData) {
-  let project = getProjectFromData(getData);
+export function getFiles(project) {
   if(!project){
     console.error('Project data is required to get files.');
     return {type: GET_FILES_FAILURE, payload: {message: 'Project data is required to get files.'}};
@@ -20,7 +19,7 @@ export function getFiles(getData) {
     [CALL_GROUT]: {
       types: [ GET_FILES_REQUEST, GET_FILES_SUCCESS, GET_FILES_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner],
       subModel: 'Directory',
       method: 'get'
     }
@@ -37,13 +36,12 @@ export const ADD_FILES_FAILURE = 'ADD_FILES_FAILURE';
  * @param {String} addData.project.name - Name of project to add file to
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
-export function addFiles(filesData) {
-  let project = getProjectFromData(filesData);
+export function addFiles(project, files) {
   if(!project){
-    console.error('Project data is required to add a file.');
+    console.error('Project is required to add files.');
     return {type: ADD_FILES_FAILURE, payload: {message: 'Project data is required to get a file.'}};
   }
-  if(!filesData.files){
+  if(!files){
     console.error('Directory array is required to add files.');
     return {type: ADD_FILES_FAILURE, payload: {message: 'Directory list is required to add.'}};
   }
@@ -51,7 +49,7 @@ export function addFiles(filesData) {
     [CALL_GROUT]: {
       types: [ ADD_FILES_REQUEST, ADD_FILES_SUCCESS, ADD_FILES_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner],
       subModel: 'Directory',
       method: 'add',
       methodData: filesData.files
@@ -69,9 +67,7 @@ export const GET_FILE_FAILURE = 'GET_FILE_FAILURE';
  * @param {String} addData.project.name - Name of project to add file to
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
-export function getFile(getData) {
-  const { path } = getData;
-  let project = getProjectFromData(getData);
+export function getFile(project, path) {
   if(!project){
     console.error('Project data is required to get a file.');
     return {type: GET_FILE_FAILURE, payload: {message: 'Project data is required to get a file.'}};
@@ -84,7 +80,7 @@ export function getFile(getData) {
     [CALL_GROUT]: {
       types: [ GET_FILE_REQUEST, GET_FILE_SUCCESS, GET_FILE_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner],
       subModel: 'File',
       subModelData: getData.path,
       method: 'get'
@@ -103,25 +99,23 @@ export const ADD_FILE_FAILURE = 'ADD_FILE_FAILURE';
  * @param {String} addData.project.name - Name of project to add file to
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
-export function addFile(addData) {
-  const { path } = addData;
-  let project = getProjectFromData(addData);
-  if(!project){
-    console.error({ description: 'Project data is required to add a file.', addData });
-    return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to add a file.'}};
+export function addFile(project, path) {
+  if(!project || !project.name){
+    console.error({ description: 'Project with name is required to add a file.'});
+    return {type: ADD_FILE_FAILURE, payload: {message: 'Project is required to add a file.'}};
   }
   if(!path){
-    console.error({ description: 'Path is required to add file.', addData });
+    console.error({ description: 'Path is required to add file.' });
     return {type: ADD_FILE_FAILURE, payload: {message: 'Path is required to add a file.'}};
   }
   return {
     [CALL_GROUT]: {
       types: [ ADD_FILE_REQUEST, ADD_FILE_SUCCESS, ADD_FILE_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner],
       subModel: 'Directory',
       method: 'addFile',
-      methodData: { path }
+      methodData: [path]
     }
   }
 }
@@ -137,10 +131,8 @@ export const DELETE_FILE_FAILURE = 'DELETE_FILE_FAILURE';
  * @param {String} addData.project.name - Name of project that contains file
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
-export function deleteFile(deleteData) {
-  const { path } = deleteData;
-  let projectData = getProjectFromData(deleteData);
-  if(!projectData.name){
+export function deleteFile(project, path) {
+  if(!project){
     console.error('Project is required to delete a file.');
     return {type: DELETE_FILE_FAILURE, payload: {message: 'Project is required to delete file.'}};
   }
@@ -155,9 +147,9 @@ export function deleteFile(deleteData) {
     [CALL_GROUT]: {
       types: [ DELETE_FILE_REQUEST, DELETE_FILE_SUCCESS, DELETE_FILE_FAILURE ],
       model: 'Project',
-      modelData: projectData,
+      modelData: [project.name, project.owner],
       subModel: 'File',
-      subModelData: { path },
+      subModelData: [path],
       method: 'remove'
     }
   }
@@ -174,9 +166,7 @@ export const ADD_FOLDER_FAILURE = 'ADD_FOLDER_FAILURE';
  * @param {String} addData.project.name - Name of project
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
-export function addFolder(addData) {
-  const { path } = addData;
-  let project = getProjectFromData(addData);
+export function addFolder(project, path) {
   if(!project){
     console.error({ description: 'Project data is required to add a file.', addData });
     return {type: ADD_FOLDER_FAILURE, payload: {message: 'Project data is required to add a folder.'}};
@@ -189,25 +179,10 @@ export function addFolder(addData) {
     [CALL_GROUT]: {
       types: [ ADD_FOLDER_REQUEST, ADD_FOLDER_SUCCESS, ADD_FOLDER_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner],
       subModel: 'Directory',
       method: 'addFolder',
       methodData: [path, name]
     }
   }
-}
-
-function getProjectFromData(data) {
-  const { project, projectName } = data;
-  let modelData = {};
-  if(typeof projectName === 'undefined' && (typeof project === 'undefined' || !project.name)){
-    console.error('Project or projectName is required.');
-    return null;
-  }
-  if(typeof projectName !== 'undefined'){
-    modelData.name = projectName;
-  } else {
-    modelData = clone(project);
-  }
-  return modelData;
 }

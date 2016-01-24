@@ -4,12 +4,13 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-export function login(loginData) {
+export function login(loginData, redirect) {
   return {
     [CALL_GROUT]: {
       types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
       method: 'login',
-      methodData: loginData
+      methodData: loginData,
+      redirect
     }
   }
 }
