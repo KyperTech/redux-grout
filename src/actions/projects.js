@@ -24,8 +24,7 @@ export const GET_PROJECT_REQUEST = 'GET_PROJECT_REQUEST';
 export const GET_PROJECT_SUCCESS = 'GET_PROJECT_SUCCESS';
 export const GET_PROJECT_FAILURE = 'GET_PROJECT_FAILURE';
 
-export function getProject(projectData) {
-  let project = getProjectFromData(projectData);
+export function getProject(project) {
   if(!project){
     console.error({ description: 'Project data is required to get project.', projectData });
     return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to get project.'}};
@@ -34,7 +33,7 @@ export function getProject(projectData) {
     [CALL_GROUT]: {
       types: [ GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner.username],
       method: 'get',
       schema: Schemas.PROJECT
     }
@@ -61,8 +60,7 @@ export const UPDATE_PROJECT_REQUEST = 'UPDATE_PROJECT_REQUEST';
 export const UPDATE_PROJECT_SUCCESS = 'UPDATE_PROJECT_SUCCESS';
 export const UPDATE_PROJECT_FAILURE = 'UPDATE_PROJECT_FAILURE';
 
-export function updateProject(projectData) {
-  let project = getProjectFromData(projectData);
+export function updateProject(project) {
   if(!project){
     console.error({ description: 'Project data is required to update project.', projectData });
     return {type: UPDATE_PROJECT_FAILURE, payload: {message: 'Project data is required to update project.'}};
@@ -71,9 +69,9 @@ export function updateProject(projectData) {
     [CALL_GROUT]: {
       types: [ UPDATE_PROJECT_REQUEST, UPDATE_PROJECT_SUCCESS, UPDATE_PROJECT_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner.username],
       method: 'update',
-      methodData: projectData,
+      methodData: project,
       schema: Schemas.PROJECT
     }
   }
@@ -83,8 +81,7 @@ export const DELETE_PROJECT_REQUEST = 'DELETE_PROJECT_REQUEST';
 export const DELETE_PROJECT_SUCCESS = 'DELETE_PROJECT_SUCCESS';
 export const DELETE_PROJECT_FAILURE = 'DELETE_PROJECT_FAILURE';
 
-export function deleteProject(projectData) {
-  let project = getProjectFromData(projectData);
+export function deleteProject(project) {
   if(!project){
     console.error({ description: 'Project data is required to delete project.', projectData });
     return {type: DELETE_PROJECT_FAILURE, payload: {message: 'Project data is required to delete project.'}};
@@ -93,7 +90,7 @@ export function deleteProject(projectData) {
     [CALL_GROUT]: {
       types: [ DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE ],
       model: 'Project',
-      modelData: project,
+      modelData: [project.name, project.owner.username],
       method: 'remove',
       schema: Schemas.PROJECT
     }
@@ -115,7 +112,7 @@ export function addCollaborator(user, project) {
     [CALL_GROUT]: {
       types: [ ADD_COLLABORATOR_REQUEST, ADD_COLLABORATOR_SUCCESS, ADD_COLLABORATOR_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner],
+      modelData: [project.name, project.owner.username],
       method: 'addCollaborators',
       methodData: [user],
       schema: Schemas.PROJECT

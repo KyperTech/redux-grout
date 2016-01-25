@@ -57,10 +57,10 @@ const templateSchema = new Schema('templates', {
 const groupSchema = new Schema('groups', {
   idAttribute: 'id'
 })
-projectSchema.define({
-  owner: accountSchema,
-  collaborators: arrayOf(accountSchema)
-})
+// projectSchema.define({
+//   owner: accountSchema,
+//   collaborators: arrayOf(accountSchema)
+// })
 // Schemas for Tessellate API responses
 export const Schemas = {
   ACCOUNT: accountSchema,

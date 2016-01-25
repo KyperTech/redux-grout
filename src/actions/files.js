@@ -19,7 +19,7 @@ export function getFiles(project) {
     [CALL_GROUT]: {
       types: [ GET_FILES_REQUEST, GET_FILES_SUCCESS, GET_FILES_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner],
+      modelData: [project.name, project.owner.username],
       subModel: 'Directory',
       method: 'get'
     }
@@ -49,7 +49,7 @@ export function addFiles(project, files) {
     [CALL_GROUT]: {
       types: [ ADD_FILES_REQUEST, ADD_FILES_SUCCESS, ADD_FILES_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner],
+      modelData: [project.name, project.owner.username],
       subModel: 'Directory',
       method: 'add',
       methodData: filesData.files
@@ -80,7 +80,7 @@ export function getFile(project, path) {
     [CALL_GROUT]: {
       types: [ GET_FILE_REQUEST, GET_FILE_SUCCESS, GET_FILE_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner],
+      modelData: [project.name, project.owner.username],
       subModel: 'File',
       subModelData: getData.path,
       method: 'get'
@@ -112,7 +112,7 @@ export function addFile(project, path) {
     [CALL_GROUT]: {
       types: [ ADD_FILE_REQUEST, ADD_FILE_SUCCESS, ADD_FILE_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner],
+      modelData: [project.name, project.owner.username],
       subModel: 'Directory',
       method: 'addFile',
       methodData: [path]
@@ -147,7 +147,7 @@ export function deleteFile(project, path) {
     [CALL_GROUT]: {
       types: [ DELETE_FILE_REQUEST, DELETE_FILE_SUCCESS, DELETE_FILE_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner],
+      modelData: [project.name, project.owner.username],
       subModel: 'File',
       subModelData: [path],
       method: 'remove'
@@ -179,10 +179,10 @@ export function addFolder(project, path) {
     [CALL_GROUT]: {
       types: [ ADD_FOLDER_REQUEST, ADD_FOLDER_SUCCESS, ADD_FOLDER_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner],
+      modelData: [project.name, project.owner.username],
       subModel: 'Directory',
       method: 'addFolder',
-      methodData: [path, name]
+      methodData: [path]
     }
   }
 }
