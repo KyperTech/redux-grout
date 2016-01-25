@@ -57,6 +57,7 @@ const templateSchema = new Schema('templates', {
 const groupSchema = new Schema('groups', {
   idAttribute: 'id'
 })
+//Populated by server
 // projectSchema.define({
 //   owner: accountSchema,
 //   collaborators: arrayOf(accountSchema)
