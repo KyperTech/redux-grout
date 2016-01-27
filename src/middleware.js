@@ -6,7 +6,6 @@ import { each, isObject, isString, isArray } from 'lodash';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 function callGrout(callInfoObj) {
-  console.log('callInfoObj:', callInfoObj);
   const { model, subModel, subModelData, method, schema } = callInfoObj;
   let { modelData, methodData } = callInfoObj;
   let grout = getGrout();
@@ -22,7 +21,7 @@ function callGrout(callInfoObj) {
   if (!isArray(methodData)) {
     methodData = [methodData];
   }
-  return grout[method].apply(grout, methodData).then((response) => {
+  return grout[method].apply(grout, methodData).then(response => {
     let endResult;
     if(schema){
       const camelizedJson = camelizeKeys(response)
@@ -31,9 +30,9 @@ function callGrout(callInfoObj) {
       endResult = response;
     }
     return endResult;
-  }, (err) => {
-    console.error('Error calling grout', err);
-    return Promise.reject(err);
+  }, error => {
+    console.error('Error calling grout', error);
+    return Promise.reject(error);
   });
 }
 
@@ -49,7 +48,7 @@ const accountSchema = new Schema('accounts', {
   idAttribute: 'id'
 })
 const projectSchema = new Schema('projects', {
-  idAttribute: 'name'
+  idAttribute: generateProjectSlug
 })
 const templateSchema = new Schema('templates', {
   idAttribute: 'id'
@@ -112,17 +111,16 @@ export default store => next => action => {
   next(actionWith({ type: requestType }))
   const callInfoObj = { model, modelData, subModel, subModelData, method, methodData, schema, redirect };
   return callGrout(callInfoObj).then(
-    response => {
-      next(actionWith({
+    response => next(actionWith({
         response,
         type: successType
-      }))
-      if(redirect) {
-        dispatch(pushState(null, redirect))
-      }
-    }, error => next(actionWith({
+      })), error => next(actionWith({
       type: failureType,
       error: error.message || error || 'Something bad happened'
     }))
   )
+}
+
+function generateProjectSlug(entity) {
+  return `${entity.owner.username}/${entity.name}`;
 }
