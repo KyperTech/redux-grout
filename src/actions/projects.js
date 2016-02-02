@@ -60,7 +60,7 @@ export const UPDATE_PROJECT_REQUEST = 'UPDATE_PROJECT_REQUEST';
 export const UPDATE_PROJECT_SUCCESS = 'UPDATE_PROJECT_SUCCESS';
 export const UPDATE_PROJECT_FAILURE = 'UPDATE_PROJECT_FAILURE';
 
-export function updateProject(project) {
+export function updateProject(project, data) {
   if(!project){
     console.error({ description: 'Project data is required to update project.', projectData });
     return {type: UPDATE_PROJECT_FAILURE, payload: {message: 'Project data is required to update project.'}};
@@ -71,7 +71,7 @@ export function updateProject(project) {
       model: 'Project',
       modelData: [project.name, project.owner.username],
       method: 'update',
-      methodData: project,
+      methodData: data,
       schema: Schemas.PROJECT
     }
   }
@@ -101,9 +101,7 @@ export const ADD_COLLABORATOR_REQUEST = 'ADD_COLLABORATOR_REQUEST';
 export const ADD_COLLABORATOR_SUCCESS = 'ADD_COLLABORATOR_SUCCESS';
 export const ADD_COLLABORATOR_FAILURE = 'ADD_COLLABORATOR_FAILURE';
 
-export function addCollaborator(user, project) {
-  console.log('adding collaborator with user:', user);
-  console.log('adding collaborator with project:', project);
+export function addCollaborator(project, user) {
   if(!user){
     console.error({ description: 'Collaborator should have user specified.', user });
     return {type: ADD_COLLABORATOR_FAILURE, payload: {message: 'Collaborator should have user specified.'}};
@@ -113,7 +111,28 @@ export function addCollaborator(user, project) {
       types: [ ADD_COLLABORATOR_REQUEST, ADD_COLLABORATOR_SUCCESS, ADD_COLLABORATOR_FAILURE ],
       model: 'Project',
       modelData: [project.name, project.owner.username],
-      method: 'addCollaborators',
+      method: 'addCollaborator',
+      methodData: [user],
+      schema: Schemas.PROJECT
+    }
+  }
+}
+
+export const REMOVE_COLLABORATOR_REQUEST = 'REMOVE_COLLABORATOR_REQUEST';
+export const REMOVE_COLLABORATOR_SUCCESS = 'REMOVE_COLLABORATOR_SUCCESS';
+export const REMOVE_COLLABORATOR_FAILURE = 'REMOVE_COLLABORATOR_FAILURE';
+
+export function removeCollaborator(project, user) {
+  if(!user){
+    console.error({ description: 'Collaborator should have user specified.', user });
+    return {type: REMOVE_COLLABORATOR_FAILURE, payload: { message: 'Collaborator should have user specified.' }};
+  }
+  return {
+    [CALL_GROUT]: {
+      types: [ REMOVE_COLLABORATOR_REQUEST, REMOVE_COLLABORATOR_SUCCESS, REMOVE_COLLABORATOR_FAILURE ],
+      model: 'Project',
+      modelData: [project.name, project.owner.username],
+      method: 'removeCollaborator',
       methodData: [user],
       schema: Schemas.PROJECT
     }

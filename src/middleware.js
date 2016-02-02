@@ -6,6 +6,7 @@ import { each, isObject, isString, isArray } from 'lodash';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 function callGrout(callInfoObj) {
+  // console.log('middleware', callInfoObj);
   const { model, subModel, subModelData, method, schema } = callInfoObj;
   let { modelData, methodData } = callInfoObj;
   let grout = getGrout();
@@ -17,6 +18,9 @@ function callGrout(callInfoObj) {
   }
   if(subModel){
     grout = grout[subModel];
+  }
+  if(subModelData){
+    grout = grout(subModelData);
   }
   if (!isArray(methodData)) {
     methodData = [methodData];
@@ -45,7 +49,7 @@ function callGrout(callInfoObj) {
 // Read more about Normalizr: https://github.com/gaearon/normalizr
 
 const accountSchema = new Schema('accounts', {
-  idAttribute: 'id'
+  idAttribute: '_id'
 })
 const projectSchema = new Schema('projects', {
   idAttribute: generateProjectSlug
@@ -57,10 +61,10 @@ const groupSchema = new Schema('groups', {
   idAttribute: 'id'
 })
 //Populated by server
-// projectSchema.define({
-//   owner: accountSchema,
-//   collaborators: arrayOf(accountSchema)
-// })
+projectSchema.define({
+  // owner: accountSchema,
+  // collaborators: arrayOf(accountSchema)
+})
 // Schemas for Tessellate API responses
 export const Schemas = {
   ACCOUNT: accountSchema,

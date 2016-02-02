@@ -1,15 +1,25 @@
 import { CALL_GROUT, Schemas } from '../middleware'
-
+import { isString } from 'lodash';
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-export function login(loginData, redirect) {
+export function login(methodData, redirect) {
+  if(isString(methodData)){
+    return {
+      [CALL_GROUT]: {
+        types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
+        method: 'loginUsingProvider',
+        methodData,
+        redirect
+      }
+    }
+  }
   return {
     [CALL_GROUT]: {
       types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
       method: 'login',
-      methodData: loginData,
+      methodData,
       redirect
     }
   }
@@ -19,12 +29,21 @@ export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
 
-export function signup(signupData) {
+export function signup(methodData) {
+  if(isString(methodData)){
+    return {
+      [CALL_GROUT]: {
+        types: [ SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE ],
+        method: 'signupUsingProvider',
+        methodData
+      }
+    }
+  }
   return {
     [CALL_GROUT]: {
       types: [ SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE ],
       method: 'signup',
-      methodData: signupData
+      methodData
     }
   }
 }
