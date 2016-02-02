@@ -51,8 +51,8 @@ export function addFiles(project, files) {
       model: 'Project',
       modelData: [project.name, project.owner.username],
       subModel: 'Directory',
-      method: 'add',
-      methodData: filesData.files
+      method: 'upload',
+      methodData: files
     }
   }
 }
@@ -99,7 +99,7 @@ export const ADD_FILE_FAILURE = 'ADD_FILE_FAILURE';
  * @param {String} addData.project.name - Name of project to add file to
  * @param {String} addData.project.owner - Username of owner of project (in url)
  */
-export function addFile(project, path) {
+export function addFile(project, path, content) {
   if(!project || !project.name){
     console.error({ description: 'Project with name is required to add a file.'});
     return {type: ADD_FILE_FAILURE, payload: {message: 'Project is required to add a file.'}};
@@ -115,7 +115,7 @@ export function addFile(project, path) {
       modelData: [project.name, project.owner.username],
       subModel: 'Directory',
       method: 'addFile',
-      methodData: [path]
+      methodData: [path, content]
     }
   }
 }

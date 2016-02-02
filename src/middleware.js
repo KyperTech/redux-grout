@@ -51,6 +51,10 @@ function callGrout(callInfoObj) {
 const accountSchema = new Schema('accounts', {
   idAttribute: '_id'
 })
+
+function generateSlug(entity) {
+  return `${entity.owner.username}/${entity.name}`;
+}
 const projectSchema = new Schema('projects', {
   idAttribute: generateProjectSlug
 })
