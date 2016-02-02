@@ -25,6 +25,31 @@ export function getFiles(project) {
     }
   }
 }
+
+export const DOWNLOAD_FILES_REQUEST = 'DOWNLOAD_FILES_REQUEST';
+export const DOWNLOAD_FILES_SUCCESS = 'DOWNLOAD_FILES_SUCCESS';
+export const DOWNLOAD_FILES_FAILURE = 'DOWNLOAD_FILES_FAILURE';
+/**
+ * @description Download files
+ * @param {Object} addData.project - Object containing data of project
+ * @param {String} addData.project.name - Name of project to add file to
+ * @param {String} addData.project.owner - Username of owner of project (in url)
+ */
+export function downloadFiles(project) {
+  if(!project){
+    console.error('Project data is required to download files.');
+    return {type: DOWNLOAD_FILES_FAILURE, payload: {message: 'Project data is required to download files.'}};
+  }
+  return {
+    [CALL_GROUT]: {
+      types: [ DOWNLOAD_FILES_REQUEST, DOWNLOAD_FILES_SUCCESS, DOWNLOAD_FILES_FAILURE ],
+      model: 'Project',
+      modelData: [project.name, project.owner.username],
+      subModel: 'Directory',
+      method: 'downloadFiles'
+    }
+  }
+}
 export const ADD_FILES_REQUEST = 'ADD_FILES_REQUEST';
 export const ADD_FILES_SUCCESS = 'ADD_FILES_SUCCESS';
 export const ADD_FILES_FAILURE = 'ADD_FILES_FAILURE';
