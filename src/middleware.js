@@ -2,30 +2,29 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import { getGrout } from './index';
-import { each, isObject, isString, isArray } from 'lodash';
+import { each, isArray } from 'lodash';
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 function callGrout(callInfoObj) {
-  // console.log('middleware', callInfoObj);
-  const { model, subModel, subModelData, method, schema } = callInfoObj;
-  let { modelData, methodData } = callInfoObj;
+  const { model, subModel, method, schema } = callInfoObj;
+  let { modelData, methodData, subModelData } = callInfoObj;
   let grout = getGrout();
   if (!isArray(modelData)) {
     modelData = [modelData];
   }
+  if (!isArray(subModelData)) {
+    subModelData = [subModelData];
+  }
   if(model){
-    grout = (isObject(modelData) || isString(modelData)) ? grout[model].apply(grout, modelData) : grout[model];
+    grout = modelData ? grout[model].apply(grout, modelData) : grout[model];
   }
   if(subModel){
-    grout = grout[subModel];
-  }
-  if(subModelData){
-    grout = grout(subModelData);
+    grout = subModelData ? grout[subModel].apply(grout, subModelData) : grout[subModel];
   }
   if (!isArray(methodData)) {
     methodData = [methodData];
   }
-  return grout[method].apply(grout, methodData).then(response => {
+  return grout[method].apply(grout, methodData).then((response) => {
     let endResult;
     if(schema){
       const camelizedJson = camelizeKeys(response)
@@ -34,9 +33,9 @@ function callGrout(callInfoObj) {
       endResult = response;
     }
     return endResult;
-  }, error => {
-    console.error('Error calling grout', error);
-    return Promise.reject(error);
+  }, (err) => {
+    console.error('Error calling grout', err);
+    return Promise.reject(err);
   });
 }
 
@@ -49,14 +48,14 @@ function callGrout(callInfoObj) {
 // Read more about Normalizr: https://github.com/gaearon/normalizr
 
 const accountSchema = new Schema('accounts', {
-  idAttribute: '_id'
+  idAttribute: 'id'
 })
 
 function generateSlug(entity) {
   return `${entity.owner.username}/${entity.name}`;
 }
 const projectSchema = new Schema('projects', {
-  idAttribute: generateProjectSlug
+  idAttribute: generateSlug
 })
 const templateSchema = new Schema('templates', {
   idAttribute: 'id'
@@ -65,10 +64,10 @@ const groupSchema = new Schema('groups', {
   idAttribute: 'id'
 })
 //Populated by server
-projectSchema.define({
-  // owner: accountSchema,
-  // collaborators: arrayOf(accountSchema)
-})
+// projectSchema.define({
+//   owner: accountSchema,
+//   collaborators: arrayOf(accountSchema)
+// })
 // Schemas for Tessellate API responses
 export const Schemas = {
   ACCOUNT: accountSchema,
@@ -119,16 +118,17 @@ export default store => next => action => {
   next(actionWith({ type: requestType }))
   const callInfoObj = { model, modelData, subModel, subModelData, method, methodData, schema, redirect };
   return callGrout(callInfoObj).then(
-    response => next(actionWith({
+    response => {
+      next(actionWith({
         response,
         type: successType
-      })), error => next(actionWith({
+      }))
+      if(redirect) {
+        dispatch(pushState(null, redirect))
+      }
+    }, error => next(actionWith({
       type: failureType,
       error: error.message || error || 'Something bad happened'
     }))
   )
-}
-
-function generateProjectSlug(entity) {
-  return `${entity.owner.username}/${entity.name}`;
 }

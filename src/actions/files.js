@@ -1,3 +1,4 @@
+// TODO: handle grout methods in actions until final method
 import { isObject, has, clone } from 'lodash';
 import { CALL_GROUT, Schemas } from '../middleware'
 
@@ -163,7 +164,7 @@ export function deleteFile(project, path) {
   }
   if(!path){
     console.error({
-      description: 'Path is required to delete file.', deleteData
+      description: 'Path is required to delete file.'
     });
     return {type: DELETE_FILE_FAILURE, payload: {message: 'Path is required to delete file.'}};
   }
@@ -172,7 +173,7 @@ export function deleteFile(project, path) {
       types: [ DELETE_FILE_REQUEST, DELETE_FILE_SUCCESS, DELETE_FILE_FAILURE ],
       model: 'Project',
       modelData: [project.name, project.owner.username],
-      subModel: 'File',
+      subModel: 'FileSystemEntity',
       subModelData: path,
       method: 'remove'
     }
