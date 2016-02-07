@@ -210,3 +210,35 @@ export function addFolder(project, path) {
     }
   }
 }
+
+export const CLONE_REPO_REQUEST = 'CLONE_REPO_REQUEST';
+export const CLONE_REPO_SUCCESS = 'CLONE_REPO_SUCCESS';
+export const CLONE_REPO_FAILURE = 'CLONE_REPO_FAILURE';
+/**
+ * @description Clone a repo
+ * @param {Object} addData - Project and path data of new folder
+ * @param {String} addData.path - Path of new folder
+ * @param {Object} addData.project - Object containing project data
+ * @param {String} addData.project.name - Name of project
+ * @param {String} addData.project.owner - Username of owner of project (in url)
+ */
+export function cloneRepo(project, gitUrl) {
+  if(!project){
+    console.error({ description: 'Project data is required to add a file.', project });
+    return {type: CLONE_REPO_FAILURE, payload: {message: 'Project data is required to add a folder.'}};
+  }
+  if(!gitUrl){
+    console.error({ description: 'Url is required to clone.', gitUrl });
+    return {type: CLONE_REPO_FAILURE, payload: {message: 'Url is required to clone.'}};
+  }
+  return {
+    [CALL_GROUT]: {
+      types: [ CLONE_REPO_REQUEST, CLONE_REPO_SUCCESS, CLONE_REPO_FAILURE ],
+      model: 'Project',
+      modelData: [project.name, project.owner.username],
+      subModel: 'Directory',
+      method: 'cloneRepo',
+      methodData: [gitUrl]
+    }
+  }
+}

@@ -53,7 +53,7 @@ const accountSchema = new Schema('accounts', {
 })
 
 function generateSlug(entity) {
-  return `${entity.owner.username}/${entity.name}`;
+  return entity.owner.username ? `${entity.owner.username}/${entity.name}` : `anon/${entity.name}`;
 }
 const projectSchema = new Schema('projects', {
   idAttribute: generateProjectSlug
