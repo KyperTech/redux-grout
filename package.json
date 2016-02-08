@@ -1,6 +1,6 @@
 {
   "name": "redux-grout",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Redux tools for Grout library.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
@@ -46,7 +46,7 @@
   "homepage": "https://github.com/KyperTech/redux-grout#readme",
   "dependencies": {
     "humps": "^1.0.0",
-    "kyper-grout": "0.2.2",
+    "kyper-grout": "0.2.3",
     "lodash": "^4.1.0",
     "normalizr": "^2.0.0"
   },
@@ -64,6 +64,7 @@
     "es6-promise": "^3.0.2",
     "eslint": "^1.10.3",
     "isparta": "^4.0.0",
+    "jsdom": "^8.0.2",
     "mocha": "^2.4.5",
     "rimraf": "^2.4.3"
   }

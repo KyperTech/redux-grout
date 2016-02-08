@@ -5,16 +5,6 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 export function login(methodData, redirect) {
-  if(isString(methodData)){
-    return {
-      [CALL_GROUT]: {
-        types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
-        method: 'loginUsingProvider',
-        methodData,
-        redirect
-      }
-    }
-  }
   return {
     [CALL_GROUT]: {
       types: [ LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE ],
@@ -30,15 +20,6 @@ export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = 'SIGNUP_FAILURE';
 
 export function signup(methodData) {
-  if(isString(methodData)){
-    return {
-      [CALL_GROUT]: {
-        types: [ SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE ],
-        method: 'signupUsingProvider',
-        methodData
-      }
-    }
-  }
   return {
     [CALL_GROUT]: {
       types: [ SIGNUP_REQUEST, SIGNUP_SUCCESS, SIGNUP_FAILURE ],
@@ -70,6 +51,21 @@ export function recover(recoverData) {
       types: [ RECOVER_REQUEST, RECOVER_SUCCESS, RECOVER_FAILURE ],
       method: 'recoverAccount',
       methodData: recoverData
+    }
+  }
+}
+
+export const UPLOAD_AVATAR_REQUEST = 'UPLOAD_AVATAR_REQUEST';
+export const UPLOAD_AVATAR_SUCCESS = 'UPLOAD_AVATAR_SUCCESS';
+export const UPLOAD_AVATAR_FAILURE = 'UPLOAD_AVATAR_FAILURE';
+
+export function uploadAvatar(file) {
+  console.warn();
+  return {
+    [CALL_GROUT]: {
+      types: [ UPLOAD_AVATAR_REQUEST, UPLOAD_AVATAR_SUCCESS, UPLOAD_AVATAR_FAILURE ],
+      method: 'uploadAvatar',
+      methodData: file
     }
   }
 }
