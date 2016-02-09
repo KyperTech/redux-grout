@@ -19,7 +19,6 @@ function callGrout(callInfoObj) {
     grout = modelData[0] ? grout[model].apply(grout, modelData) : grout[model];
   }
   if(subModel){
-    console.log('sub modeal data', subModelData);
     grout = subModelData[0] ? grout[subModel].apply(grout, subModelData) : grout[subModel];
   }
   if (!isArray(methodData)) {
