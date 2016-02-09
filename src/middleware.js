@@ -1,8 +1,8 @@
-
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import { getGrout } from './index';
 import { each, isArray } from 'lodash';
+
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
 function callGrout(callInfoObj) {
@@ -45,37 +45,31 @@ function callGrout(callInfoObj) {
 // consumption by reducers, because we can easily build a normalized tree
 // and keep it updated as we fetch more data.
 
-// Read more about Normalizr: https://github.com/gaearon/normalizr
-
-const accountSchema = new Schema('accounts', {
-  idAttribute: 'id'
+const userSchema = new Schema('users', {
+  idAttribute: 'username'
 })
 
-function generateSlug(entity) {
-  return entity.owner.username ? `${entity.owner.username}/${entity.name}` : `anon/${entity.name}`;
+function generateProjectSlug(project) {
+  return project.owner.username ? `${project.owner.username}/${project.name}` : `anon/${project.name}`;
 }
+
 const projectSchema = new Schema('projects', {
-  idAttribute: generateSlug
+  idAttribute: generateProjectSlug
 })
-const templateSchema = new Schema('templates', {
-  idAttribute: 'id'
-})
-const groupSchema = new Schema('groups', {
-  idAttribute: 'id'
-})
+
 //Populated by server
 // projectSchema.define({
-//   owner: accountSchema,
-//   collaborators: arrayOf(accountSchema)
+//   owner: userSchema,
+//   collaborators: arrayOf(userSchema)
 // })
+
+
 // Schemas for Tessellate API responses
 export const Schemas = {
-  ACCOUNT: accountSchema,
-  ACCOUNT_ARRAY: arrayOf(accountSchema),
+  USER: userSchema,
+  USER_ARRAY: arrayOf(userSchema),
   PROJECT: projectSchema,
-  PROJECT_ARRAY: arrayOf(projectSchema),
-  GROUP: groupSchema,
-  GROUP_ARRAY: arrayOf(groupSchema)
+  PROJECT_ARRAY: arrayOf(projectSchema)
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.

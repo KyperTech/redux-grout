@@ -41,7 +41,7 @@ export function account(state = {
   case RECOVER_SUCCESS:
     return merge({}, {isFetching: false, error: null});
   case RECOVER_FAILURE:
-    console.warn('recover failure', action);
+    // console.warn('recover failure', action);
     return merge({}, state, {isFetching: false, error: action.error});
   default:
     return state;
