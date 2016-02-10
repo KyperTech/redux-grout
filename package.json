@@ -1,13 +1,13 @@
 {
   "name": "redux-grout",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Redux tools for Grout library.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
     "clean": "rimraf lib coverage",
     "lint": "eslint src test",
-    "test": "mocha -R spec --compilers js:babel-core/register --require babel-polyfill ./test/**/*.spec.js",
+    "test": "mocha -R spec --compilers js:babel-core/register ./test/setup.js ./test/**/*.spec.js",
     "test:cov": "babel-node $(npm bin)/isparta cover --report lcov ./node_modules/mocha/bin/_mocha -- ./test --recursive",
     "build": "npm run clean && babel src --out-dir lib",
     "watch": "npm run build -- --watch",
@@ -46,7 +46,7 @@
   "homepage": "https://github.com/KyperTech/redux-grout#readme",
   "dependencies": {
     "humps": "^1.0.0",
-    "kyper-grout": "0.2.6",
+    "kyper-grout": "0.2.7",
     "lodash": "^4.3.0",
     "normalizr": "^2.0.0"
   },
