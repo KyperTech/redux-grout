@@ -60,12 +60,25 @@ export const UPLOAD_AVATAR_SUCCESS = 'UPLOAD_AVATAR_SUCCESS';
 export const UPLOAD_AVATAR_FAILURE = 'UPLOAD_AVATAR_FAILURE';
 
 export function uploadAvatar(file) {
-  console.warn();
   return {
     [CALL_GROUT]: {
       types: [ UPLOAD_AVATAR_REQUEST, UPLOAD_AVATAR_SUCCESS, UPLOAD_AVATAR_FAILURE ],
       method: 'uploadAvatar',
       methodData: file
+    }
+  }
+}
+
+export const UPDATE_ACCOUNT_REQUEST = 'UPDATE_ACCOUNT_REQUEST';
+export const UPDATE_ACCOUNT_SUCCESS = 'UPDATE_ACCOUNT_SUCCESS';
+export const UPDATE_ACCOUNT_FAILURE = 'UPDATE_ACCOUNT_FAILURE';
+
+export function updateAccount(account) {
+  return {
+    [CALL_GROUT]: {
+      types: [ UPDATE_ACCOUNT_REQUEST, UPDATE_ACCOUNT_SUCCESS, UPDATE_ACCOUNT_FAILURE ],
+      method: 'updateAccount',
+      methodData: account
     }
   }
 }
