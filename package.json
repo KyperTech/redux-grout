@@ -1,12 +1,12 @@
 {
   "name": "redux-grout",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Redux tools for Grout library.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
   "scripts": {
     "clean": "rimraf lib coverage",
-    "lint": "eslint src test",
+    "lint": "eslint src",
     "test": "mocha -R spec --compilers js:babel-core/register ./test/setup.js ./test/**/*.spec.js",
     "test:cov": "babel-node $(npm bin)/isparta cover --report lcov ./node_modules/mocha/bin/_mocha -- ./test --recursive",
     "build": "npm run clean && babel src --out-dir lib",
@@ -37,6 +37,10 @@
     {
       "name": "Scott Prue",
       "email": "<sprue.dev@gmail.com>"
+    },
+    {
+      "name": "Mel van Londen",
+      "email": "<melvanlonden@gmail.com>"
     }
   ],
   "license": "MIT",
@@ -46,28 +50,26 @@
   "homepage": "https://github.com/KyperTech/redux-grout#readme",
   "dependencies": {
     "humps": "^1.0.0",
-    "kyper-grout": "0.2.7",
+    "kyper-grout": "0.2.8",
     "lodash": "^4.3.0",
     "normalizr": "^2.0.0"
   },
   "devDependencies": {
-    "babel": "^6.5.1",
+    "babel": "^6.5.2",
     "babel-cli": "^6.5.1",
-    "babel-core": "^6.5.1",
+    "babel-core": "^6.5.2",
     "babel-eslint": "^5.0.0-beta4",
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-lodash": "^2.0.1",
-    "babel-polyfill": "^6.5.0",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
-    "babel-runtime": "^6.5.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.2.0",
-    "es6-promise": "^3.0.2",
-    "eslint": "^1.10.3",
+    "es6-promise": "^3.1.2",
+    "eslint": "^2.0.0",
     "isparta": "^4.0.0",
     "jsdom": "^8.0.2",
     "mocha": "^2.4.5",
-    "rimraf": "^2.5.1"
+    "rimraf": "^2.5.2"
   }
 }
