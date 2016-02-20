@@ -24,16 +24,16 @@ export const GET_PROJECT_REQUEST = 'GET_PROJECT_REQUEST';
 export const GET_PROJECT_SUCCESS = 'GET_PROJECT_SUCCESS';
 export const GET_PROJECT_FAILURE = 'GET_PROJECT_FAILURE';
 
-export function getProject(project) {
-  if(!project){
-    console.error({ description: 'Project data is required to get project.', projectData });
-    return {type: ADD_FILE_FAILURE, payload: {message: 'Project data is required to get project.'}};
+export function getProject(username, projectname) {
+  if(!username || !projectname){
+    console.error({ description: 'Project owner and name are required to get project.' });
+    return {type: ADD_FILE_FAILURE, payload: {message: 'Project owner and name are required to get project.'}};
   }
   return {
     [CALL_GROUT]: {
       types: [ GET_PROJECT_REQUEST, GET_PROJECT_SUCCESS, GET_PROJECT_FAILURE ],
       model: 'Project',
-      modelData: [project.name, project.owner.username],
+      modelData: [ projectname, username ],
       method: 'get',
       schema: Schemas.PROJECT
     }
