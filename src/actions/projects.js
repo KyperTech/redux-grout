@@ -7,7 +7,7 @@ export const GET_PROJECTS_FAILURE = 'GET_PROJECTS_FAILURE';
 
 export function getProjects(username) {
   if(!username){
-    console.error({ description: 'Username is required to get projects.', username });
+    console.error({ description: 'Username is required to get projects.' });
     return {type: GET_PROJECTS_FAILURE, payload: {message: 'Username is required to get projects.'}};
   }
   return {
@@ -44,13 +44,17 @@ export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
 export const ADD_PROJECT_FAILURE = 'ADD_PROJECT_FAILURE';
 
 export function addProject(name, username) {
+  if(!username || !name){
+    console.error({ description: 'Project owner and name are required to get project.' });
+    return {type: ADD_FILE_FAILURE, payload: {message: 'Project owner and name are required to get project.'}};
+  }
   return {
     [CALL_GROUT]: {
       types: [ ADD_PROJECT_REQUEST, ADD_PROJECT_SUCCESS, ADD_PROJECT_FAILURE ],
       model: 'Projects',
       modelData: [username],
       method: 'add',
-      methodData: [{name}],
+      methodData: [{ name }],
       schema: Schemas.PROJECT
     }
   }
@@ -62,7 +66,7 @@ export const UPDATE_PROJECT_FAILURE = 'UPDATE_PROJECT_FAILURE';
 
 export function updateProject(project, data) {
   if(!project){
-    console.error({ description: 'Project data is required to update project.', projectData });
+    console.error({ description: 'Project data is required to update project.' });
     return {type: UPDATE_PROJECT_FAILURE, payload: {message: 'Project data is required to update project.'}};
   }
   return {
@@ -83,7 +87,7 @@ export const DELETE_PROJECT_FAILURE = 'DELETE_PROJECT_FAILURE';
 
 export function deleteProject(project) {
   if(!project){
-    console.error({ description: 'Project data is required to delete project.', projectData });
+    console.error({ description: 'Project data is required to delete project.' });
     return {type: DELETE_PROJECT_FAILURE, payload: {message: 'Project data is required to delete project.'}};
   }
   return {
@@ -103,7 +107,7 @@ export const ADD_COLLABORATOR_FAILURE = 'ADD_COLLABORATOR_FAILURE';
 
 export function addCollaborator(project, user) {
   if(!user){
-    console.error({ description: 'Collaborator should have user specified.', user });
+    console.error({ description: 'Collaborator should have user specified.' });
     return {type: ADD_COLLABORATOR_FAILURE, payload: {message: 'Collaborator should have user specified.'}};
   }
   return {
@@ -124,7 +128,7 @@ export const REMOVE_COLLABORATOR_FAILURE = 'REMOVE_COLLABORATOR_FAILURE';
 
 export function removeCollaborator(project, user) {
   if(!user){
-    console.error({ description: 'Collaborator should have user specified.', user });
+    console.error({ description: 'Collaborator should have user specified.' });
     return {type: REMOVE_COLLABORATOR_FAILURE, payload: { message: 'Collaborator should have user specified.' }};
   }
   return {
