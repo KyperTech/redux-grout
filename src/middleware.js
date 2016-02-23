@@ -1,42 +1,42 @@
 import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
-import { getGrout } from './index';
-import { each, isArray } from 'lodash';
+import { getGrout } from './index'
+import { isArray } from 'lodash'
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-function callGrout(callInfoObj) {
-  const { model, subModel, method, schema } = callInfoObj;
-  let { modelData, methodData, subModelData } = callInfoObj;
-  let grout = getGrout();
+function callGrout (callInfoObj) {
+  const { model, subModel, method, schema } = callInfoObj
+  let { modelData, methodData, subModelData } = callInfoObj
+  let grout = getGrout()
   if (!isArray(modelData)) {
-    modelData = [modelData];
+    modelData = [modelData]
   }
   if (!isArray(subModelData)) {
-    subModelData = [subModelData];
+    subModelData = [subModelData]
   }
-  if(model){
-    grout = modelData[0] ? grout[model].apply(grout, modelData) : grout[model];
+  if (model) {
+    grout = modelData[0] ? grout[model].apply(grout, modelData) : grout[model]
   }
-  if(subModel){
-    grout = subModelData[0] ? grout[subModel].apply(grout, subModelData) : grout[subModel];
+  if (subModel) {
+    grout = subModelData[0] ? grout[subModel].apply(grout, subModelData) : grout[subModel]
   }
   if (!isArray(methodData)) {
-    methodData = [methodData];
+    methodData = [methodData]
   }
   return grout[method].apply(grout, methodData).then((response) => {
-    let endResult;
-    if(schema){
+    let endResult
+    if (schema) {
       const camelizedJson = camelizeKeys(response)
       endResult = Object.assign({}, normalize(camelizedJson, schema))
     } else {
-      endResult = response;
+      endResult = response
     }
-    return endResult;
-  }, (err) => {
-    console.error('Error calling grout', err);
-    return Promise.reject(err);
-  });
+    return endResult
+  }, error => {
+    console.error('Error calling grout', error)
+    return Promise.reject(error)
+  })
 }
 
 // We use this Normalizr schemas to transform API responses from a nested form
@@ -49,20 +49,19 @@ const userSchema = new Schema('users', {
   idAttribute: 'username'
 })
 
-function generateProjectSlug(project) {
-  return project.owner.username ? `${project.owner.username}/${project.name}` : `anon/${project.name}`;
+function generateProjectSlug (project) {
+  return project.owner.username ? `${project.owner.username}/${project.name}` : `anon/${project.name}`
 }
 
 const projectSchema = new Schema('projects', {
   idAttribute: generateProjectSlug
 })
 
-//Populated by server
+// Populated by server
 // projectSchema.define({
 //   owner: userSchema,
 //   collaborators: arrayOf(userSchema)
 // })
-
 
 // Schemas for Tessellate API responses
 export const Schemas = {
@@ -83,7 +82,7 @@ export default store => next => action => {
     return next(action)
   }
 
-  let { model, modelData, subModel, subModelData, method, methodData, cb } = callAPI
+  let { model, modelData, subModel, subModelData, method, methodData } = callAPI
   const { schema, types, redirect } = callAPI
 
   if (typeof method === 'function') {
@@ -102,7 +101,7 @@ export default store => next => action => {
     throw new Error('Expected action types to be strings.')
   }
 
-  function actionWith(data) {
+  function actionWith (data) {
     const finalAction = Object.assign({}, action, data)
     delete finalAction[CALL_GROUT]
     return finalAction
@@ -110,17 +109,12 @@ export default store => next => action => {
 
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
-  const callInfoObj = { model, modelData, subModel, subModelData, method, methodData, schema, redirect };
+  const callInfoObj = { model, modelData, subModel, subModelData, method, methodData, schema, redirect }
   return callGrout(callInfoObj).then(
-    response => {
-      next(actionWith({
-        response,
-        type: successType
-      }))
-      if(redirect) {
-        dispatch(pushState(null, redirect))
-      }
-    }, error => next(actionWith({
+    response => next(actionWith({
+      response,
+      type: successType
+    })), error => next(actionWith({
       type: failureType,
       error: error.message || error || 'Something bad happened'
     }))

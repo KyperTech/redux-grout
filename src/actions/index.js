@@ -1,17 +1,17 @@
-export * as account from './account';
-export * as projects from './projects';
-export * as files from './files';
+export * as account from './account'
+export * as projects from './projects'
+export * as files from './files'
 export function getProjectFromData(data) {
-  const { project, projectName} = data;
-  let modelData;
+  const { project, projectName} = data
+  let modelData
   if(!projectName && (!project || !project.name)){
-    console.error('Project or projectName is required.');
-    return null;
+    console.error('Project or projectName is required.')
+    return null
   }
   if(project){
-    modelData = project;
+    modelData = project
   } else {
-    modelData.name = projectName;
+    modelData.name = projectName
   }
-  return modelData;
+  return modelData
 }
