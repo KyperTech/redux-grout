@@ -1,6 +1,6 @@
 {
   "name": "redux-grout",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Redux tools for Grout library.",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
@@ -49,7 +49,7 @@
   "homepage": "https://github.com/KyperTech/redux-grout#readme",
   "dependencies": {
     "humps": "^1.0.0",
-    "kyper-grout": "0.2.9",
+    "kyper-grout": "0.2.10",
     "lodash": "^4.5.1",
     "normalizr": "^2.0.0"
   },
