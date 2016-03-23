@@ -93,8 +93,7 @@ export function deleteProject (project) {
       types: [ DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE ],
       model: 'Project',
       modelData: [project.name, project.owner.username],
-      method: 'remove',
-      schema: Schemas.PROJECT
+      method: 'remove'
     }
   }
 }

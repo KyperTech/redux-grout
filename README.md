@@ -1,12 +1,13 @@
 # Redux Grout
 
-[![npm version](https://img.shields.io/npm/v/redux-grout.svg?style=flat-square)](https://www.npmjs.com/package/redux-grout)
-[![npm downloads](https://img.shields.io/npm/dm/redux-grout.svg?style=flat-square)](https://www.npmjs.com/package/redux-grout)
-[![build status](https://img.shields.io/travis/KyperTech/redux-grout/master.svg?style=flat-square)](https://travis-ci.org/KyperTech/redux-grout)
-[![dependencies status](https://img.shields.io/david/KyperTech/redux-grout/master.svg?style=flat-square)](https://david-dm.org/KyperTech/redux-grout)
-[![codeclimate](https://img.shields.io/codeclimate/github/KyperTech/redux-grout.svg?style=flat-square)](https://codeclimate.com/github/KyperTech/redux-grout)
-[![coverage](https://img.shields.io/codeclimate/coverage/github/KyperTech/redux-grout.svg?style=flat-square)](https://codeclimate.com/github/KyperTech/redux-grout)
-[![license](https://img.shields.io/npm/l/redux-grout.svg?style=flat-square)](https://github.com/KyperTech/redux-grout/blob/master/LICENSE)
+[![NPM version][npm-image]][npm-url]
+[![NPM downloads][npm-downloads-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Dependency Status][daviddm-image]][daviddm-url]
+[![Code Climate][climate-image]][climate-url]
+[![Code Coverage][coverage-image]][coverage-url]
+[![License][license-image]][license-url]
+[![Code Style][code-style-image]][code-style-url]
 
 Redux middleware, actions, and reducers for [Grout](https://github.com/kypertech/grout).
 
@@ -87,3 +88,19 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
 
 ```
+
+[npm-image]: https://img.shields.io/npm/v/redux-grout.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/redux-grout
+[npm-downloads-image]: https://img.shields.io/npm/dm/redux-grout.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/KyperTech/redux-grout/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/KyperTech/redux-grout
+[daviddm-image]: https://img.shields.io/david/KyperTech/redux-grout.svg?style=flat-square
+[daviddm-url]: https://david-dm.org/KyperTech/redux-grout
+[climate-image]: https://img.shields.io/codeclimate/github/KyperTech/redux-grout.svg?style=flat-square
+[climate-url]: https://codeclimate.com/github/KyperTech/redux-grout
+[coverage-image]: https://img.shields.io/codeclimate/coverage/github/KyperTech/redux-grout.svg?style=flat-square
+[coverage-url]: https://codeclimate.com/github/KyperTech/redux-grout
+[license-image]: https://img.shields.io/npm/l/redux-grout.svg?style=flat-square
+[license-url]: https://github.com/KyperTech/redux-grout/blob/master/LICENSE
+[code-style-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
+[code-style-url]: http://standardjs.com/
